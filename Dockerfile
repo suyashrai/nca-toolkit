@@ -152,6 +152,15 @@ RUN git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg && \
     make install && \
     cd .. && rm -rf ffmpeg
 
+# Install npm & ffmpeg-concat
+RUN apt update && \
+    apt install -y npm && \
+    git clone https://github.com/suyashrai/ffmpeg-concat.git && \
+    cd ffmpeg-concat && \
+    npm install && \
+    npm audit fix --force \
+    && npm audit fix --force
+
 # Add /usr/local/bin to PATH (if not already included)
 ENV PATH="/usr/local/bin:${PATH}"
 
