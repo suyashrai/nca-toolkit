@@ -152,14 +152,28 @@ RUN git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg && \
     make install && \
     cd .. && rm -rf ffmpeg
 
-# Install npm & ffmpeg-concat
-RUN apt update && \
-    apt install -y npm && \
-    git clone https://github.com/suyashrai/ffmpeg-concat.git && \
-    cd ffmpeg-concat && \
-    npm install && \
-    npm audit fix --force \
-    && npm audit fix --force
+    # Install npm & ffmpeg-concat
+    RUN apt update
+
+    RUN apt-get install -y \
+        nano curl \
+        build-essential \
+        libxi-dev \
+        libglu1-mesa-dev \
+        libglew-dev \
+        pkg-config \
+        mesa-utils \
+        libgl1-mesa-dri \
+        libglapi-mesa \
+        libosmesa6
+
+    RUN apt install -y npm
+
+
+    RUN npm install --save ffmpeg-concat && npm install -g ffmpeg-concat
+
+    RUN apt-get install -y xvfb
+
 
 # Add /usr/local/bin to PATH (if not already included)
 ENV PATH="/usr/local/bin:${PATH}"
